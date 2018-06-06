@@ -52,15 +52,12 @@ public class BsUserServiceImpl extends BaseServiceImpl<BsUserMapper, BsUser> imp
 		user.setLoginName(loginName);
 		user.setName(name);
 		user.setPassWord(MD5.toMD5("123456"));
-		Integer num1 = bsUserMapper.insert(user);
-		if(num1.equals(0)) {
-			throw new RuntimeException();
-		}
+		bsUserMapper.insert(user);
 		BsUserRole userRole = new BsUserRole();
 		userRole.setUserId(user.getId());
 		userRole.setRoleCode(roleCode);
-		Integer num2 = bsUserRoleMapper.insert(userRole);
-		if(num2.equals(0)) {
+		Integer num = bsUserRoleMapper.insert(userRole);
+		if(num.equals(0)) {
 			throw new RuntimeException();
 		}
 	}
@@ -73,12 +70,9 @@ public class BsUserServiceImpl extends BaseServiceImpl<BsUserMapper, BsUser> imp
 	@Transactional
 	@Override
 	public void delUser(Long id) throws RuntimeException{
-		Integer num2 = bsUserRoleMapper.delByUserId(id);
-		if(num2.equals(0)) {
-			throw new RuntimeException();
-		}
-		Integer num1 = bsUserMapper.deleteById(id);
-		if(num1.equals(0)) {
+		bsUserRoleMapper.delByUserId(id);
+		Integer num = bsUserMapper.deleteById(id);
+		if(num.equals(0)) {
 			throw new RuntimeException();
 		}
 	}
